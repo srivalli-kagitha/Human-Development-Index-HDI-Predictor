@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+
+{% block title %}Home - HDI Predictor Dashboard{% endblock %}
+
+{% block content %}
+<div class="container fade-in">
+  
+  <!-- Hero Section -->
+  <header class="hero-section text-center text-lg-start mb-5 rounded-4 p-4 p-md-5 bg-opacity-10 bg-primary">
+    <div class="row align-items-center">
+      <div class="col-lg-7 mb-4 mb-lg-0">
+        <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-3 py-2 mb-3 fw-bold">Machine Learning Web App</span>
+        <h1 class="hero-title mb-3">Human Development Index (HDI) Predictor</h1>
+        <p class="hero-subtitle mb-4">
+          A predictive analytics tool powered by Scikit-Learn. Assess and forecast the development index of any region by calculating health, education, and wealth dimensions.
+        </p>
+        <div class="d-flex flex-wrap justify-content-center justify-content-lg-start gap-3">
+          <a href="{{ url_for('predict') }}" class="btn btn-gradient btn-lg d-flex align-items-center">
+            <i class="bi bi-play-circle-fill me-2"></i> Get Started (Predict Score)
+          </a>
+          <a href="{{ url_for('about') }}" class="btn btn-outline-custom btn-lg d-flex align-items-center">
+            <i class="bi bi-info-circle me-2"></i> About Project
+          </a>
+        </div>
+      </div>
+      <div class="col-lg-5 text-center">
+        <!-- Dashboard Illustration using dynamic badges and cards -->
+        <div class="p-4 bg-body rounded-4 shadow-lg border border-opacity-10 border-secondary position-relative mx-auto" style="max-width: 380px;">
+          <div class="position-absolute top-0 start-50 translate-middle-x badge bg-success px-4 py-2 shadow-sm rounded-pill fw-bold" style="transform: translateY(-50%) !important;">
+            Model Accuracy: 98.6%
+          </div>
+          <div class="text-start mb-3 border-bottom pb-2">
+            <h5 class="fw-bold mb-0">Predictive Sample</h5>
+            <small class="text-secondary">Inputting development milestones</small>
+          </div>
+          <div class="d-flex justify-content-between mb-2">
+            <span>Life Expectancy:</span>
+            <strong class="text-primary">82 Years</strong>
+          </div>
+          <div class="d-flex justify-content-between mb-2">
+            <span>Expected Schooling:</span>
+            <strong class="text-primary">16.5 Years</strong>
+          </div>
+          <div class="d-flex justify-content-between mb-2">
+            <span>Mean Schooling:</span>
+            <strong class="text-primary">13.0 Years</strong>
+          </div>
+          <div class="d-flex justify-content-between mb-3">
+            <span>GNI Per Capita:</span>
+            <strong class="text-primary">$55,000</strong>
+          </div>
+          <div class="border-top pt-3 d-flex align-items-center justify-content-between">
+            <span class="fw-semibold">Estimated HDI Score:</span>
+            <span class="badge bg-success fs-6">0.932 (Very High)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- What is HDI & Calculation Pillars -->
+  <section class="mb-5">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold">Understanding Human Development Index (HDI)</h2>
+      <p class="text-secondary mx-auto" style="max-width: 700px;">
+        The Human Development Index is a summary measure of average achievement in key dimensions of human development: a long and healthy life, being knowledgeable, and have a decent standard of living.
+      </p>
+    </div>
+
+    <div class="row g-4 justify-content-center">
+      <!-- Pillar 1: Health -->
+      <div class="col-md-4">
+        <div class="card-custom p-4">
+          <div class="card-icon-wrapper bg-success">
+            <i class="bi bi-heart-pulse-fill fs-4"></i>
+          </div>
+          <h4 class="fw-bold mb-2">Long & Healthy Life</h4>
+          <p class="text-secondary">
+            Assessed by **Life Expectancy at Birth**. It estimates how many years a newborn child is expected to live if prevailing patterns of mortality remain constant throughout their life.
+          </p>
+        </div>
+      </div>
+      
+      <!-- Pillar 2: Education -->
+      <div class="col-md-4">
+        <div class="card-custom p-4">
+          <div class="card-icon-wrapper bg-info">
+            <i class="bi bi-book-half fs-4"></i>
+          </div>
+          <h4 class="fw-bold mb-2">Knowledge & Education</h4>
+          <p class="text-secondary">
+            Measured by combining **Expected Years of Schooling** (for children entering school) and **Mean Years of Schooling** (average completed years by adults aged 25 and older).
+          </p>
+        </div>
+      </div>
+
+      <!-- Pillar 3: GNI per capita -->
+      <div class="col-md-4">
+        <div class="card-custom p-4">
+          <div class="card-icon-wrapper bg-warning">
+            <i class="bi bi-cash-stack fs-4"></i>
+          </div>
+          <h4 class="fw-bold mb-2">Decent Living Standard</h4>
+          <p class="text-secondary">
+            Evaluated by **Gross National Income (GNI) Per Capita** adjusted to purchasing power parity (PPP) in USD, reflecting economic capacities and basic purchasing power.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Importance and Objectives -->
+  <section class="row g-4 align-items-center mb-5">
+    <div class="col-lg-6">
+      <div class="p-4 bg-body rounded-4 shadow-sm border border-opacity-10 border-secondary">
+        <h3 class="fw-bold mb-3 d-flex align-items-center">
+          <i class="bi bi-patch-check-fill text-primary me-2"></i> Importance of HDI
+        </h3>
+        <p class="text-secondary">
+          Traditional metrics like Gross Domestic Product (GDP) only value economic transactions and market sizes. In contrast, HDI shifted the paradigm of development towards human capabilities:
+        </p>
+        <ul class="list-group list-group-flush bg-transparent">
+          <li class="list-group-item bg-transparent text-secondary px-0 border-0 d-flex align-items-start">
+            <i class="bi bi-chevron-right text-primary me-2 mt-1"></i> 
+            <span>Focuses policy choices on healthcare and education outcomes rather than pure material outputs.</span>
+          </li>
+          <li class="list-group-item bg-transparent text-secondary px-0 border-0 d-flex align-items-start">
+            <i class="bi bi-chevron-right text-primary me-2 mt-1"></i> 
+            <span>Helps non-governmental and developmental organizations allocate aid and micro-resources efficiently.</span>
+          </li>
+          <li class="list-group-item bg-transparent text-secondary px-0 border-0 d-flex align-items-start">
+            <i class="bi bi-chevron-right text-primary me-2 mt-1"></i> 
+            <span>Promotes public accountability by highlighting discrepancies between high national income and low educational or life indices.</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="col-lg-6">
+      <div class="p-4 bg-body rounded-4 shadow-sm border border-opacity-10 border-secondary">
+        <h3 class="fw-bold mb-3 d-flex align-items-center">
+          <i class="bi bi-bullseye text-danger me-2"></i> Project Objectives
+        </h3>
+        <p class="text-secondary">
+          The main goals of the **Human Development Index (HDI) Predictor** project are:
+        </p>
+        <div class="row g-2">
+          <div class="col-6">
+            <div class="p-3 bg-light rounded-3 text-center border">
+              <h5 class="fw-bold mb-1 text-primary">ML Modeling</h5>
+              <small class="text-muted text-xs">Linear Regression analysis of indices</small>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="p-3 bg-light rounded-3 text-center border">
+              <h5 class="fw-bold mb-1 text-primary">Interactive UI</h5>
+              <small class="text-muted text-xs">Range sliders & live simulation</small>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="p-3 bg-light rounded-3 text-center border">
+              <h5 class="fw-bold mb-1 text-primary">High Accuracy</h5>
+              <small class="text-muted text-xs">Trained on realistic worldwide ratios</small>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="p-3 bg-light rounded-3 text-center border">
+              <h5 class="fw-bold mb-1 text-primary">Academic Ready</h5>
+              <small class="text-muted text-xs">Complete documentation & code standard</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+{% endblock %}

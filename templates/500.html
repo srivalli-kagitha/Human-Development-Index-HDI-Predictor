@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Internal Server Error - 500{% endblock %}
+
+{% block content %}
+<div class="container fade-in py-5 text-center">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card-custom p-5">
+        <div class="text-warning mb-4">
+          <i class="bi bi-shield-slash-fill" style="font-size: 5rem;"></i>
+        </div>
+        <h1 class="fw-bold display-4 mb-3">500 Error</h1>
+        <h3 class="fw-semibold mb-3">Internal Server Error</h3>
+        <p class="text-secondary mb-4">
+          An unexpected error occurred in the predictive pipeline or server runtime. Please ensure your input data ranges match constraints and try again.
+        </p>
+        <a href="{{ url_for('predict') }}" class="btn btn-gradient btn-lg">
+          <i class="bi bi-arrow-clockwise me-2"></i> Try Again
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

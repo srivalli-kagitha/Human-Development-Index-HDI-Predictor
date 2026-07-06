@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+
+{% block title %}Predict HDI - Human Development Index Predictor{% endblock %}
+
+{% block content %}
+<div class="container fade-in">
+  <div class="row g-4">
+    
+    <!-- Prediction Form Column -->
+    <div class="col-lg-7">
+      <div class="card-custom p-4 p-md-5">
+        <div class="d-flex align-items-center mb-4 border-bottom pb-3">
+          <div class="card-icon-wrapper me-3 mb-0">
+            <i class="bi bi-sliders2 fs-4"></i>
+          </div>
+          <div>
+            <h2 class="fw-bold mb-0">HDI Score Simulator</h2>
+            <p class="text-secondary mb-0">Adjust development indicators to estimate the index score</p>
+          </div>
+        </div>
+
+        <form action="{{ url_for('predict') }}" method="POST" id="predictForm" novalidate>
+          
+          <!-- Indicator 1: Life Expectancy -->
+          <div class="mb-4">
+            <div class="d-flex justify-content-between align-items-center">
+              <label for="life_expectancy" class="form-label d-flex align-items-center">
+                Life Expectancy at Birth (Years)
+                <i class="bi bi-info-circle-fill text-muted ms-2" data-bs-toggle="tooltip" data-bs-placement="right" title="Average number of years a newborn is expected to live. Realistic global range: 20 to 100."></i>
+              </label>
+              <span class="badge bg-secondary-subtle text-secondary" id="life_expectancy_val"></span>
+            </div>
+            <div class="range-slider-wrapper">
+              <input type="number" step="0.1" name="life_expectancy" id="life_expectancy" class="form-control form-control-custom" style="width: 100px;" value="{{ life_expectancy | default('72.5') }}" min="20.0" max="100.0" required>
+              <input type="range" step="0.1" id="life_expectancy_slider" class="form-range slider-custom" min="20.0" max="100.0" value="{{ life_expectancy | default('72.5') }}">
+            </div>
+            <div class="invalid-feedback">Life Expectancy must be between 20.0 and 100.0 years.</div>
+          </div>
+
+          <!-- Indicator 2: Expected Years of Schooling -->
+          <div class="mb-4">
+            <div class="d-flex justify-content-between align-items-center">
+              <label for="expected_schooling" class="form-label d-flex align-items-center">
+                Expected Years of Schooling (Years)
+                <i class="bi bi-info-circle-fill text-muted ms-2" data-bs-toggle="tooltip" data-bs-placement="right" title="Number of years of schooling children are expected to receive. Realistic global range: 0 to 25."></i>
+              </label>
+            </div>
+            <div class="range-slider-wrapper">
+              <input type="number" step="0.1" name="expected_schooling" id="expected_schooling" class="form-control form-control-custom" style="width: 100px;" value="{{ expected_schooling | default('13.5') }}" min="0.0" max="25.0" required>
+              <input type="range" step="0.1" id="expected_schooling_slider" class="form-range slider-custom" min="0.0" max="25.0" value="{{ expected_schooling | default('13.5') }}">
+            </div>
+            <div class="invalid-feedback">Expected Schooling must be between 0.0 and 25.0 years.</div>
+          </div>
+
+          <!-- Indicator 3: Mean Years of Schooling -->
+          <div class="mb-4">
+            <div class="d-flex justify-content-between align-items-center">
+              <label for="mean_schooling" class="form-label d-flex align-items-center">
+                Mean Years of Schooling (Years)
+                <i class="bi bi-info-circle-fill text-muted ms-2" data-bs-toggle="tooltip" data-bs-placement="right" title="Average number of years of education completed by people aged 25 years and older. Realistic global range: 0 to 20."></i>
+              </label>
+            </div>
+            <div class="range-slider-wrapper">
+              <input type="number" step="0.1" name="mean_schooling" id="mean_schooling" class="form-control form-control-custom" style="width: 100px;" value="{{ mean_schooling | default('8.5') }}" min="0.0" max="20.0" required>
+              <input type="range" step="0.1" id="mean_schooling_slider" class="form-range slider-custom" min="0.0" max="20.0" value="{{ mean_schooling | default('8.5') }}">
+            </div>
+            <div class="invalid-feedback">Mean Schooling must be between 0.0 and 20.0 years.</div>
+            <div class="text-danger mt-1 fs-7" id="schooling-relation-feedback" style="display: none;">
+              <i class="bi bi-exclamation-triangle-fill"></i> Mean Years of Schooling cannot exceed Expected Years of Schooling.
+            </div>
+          </div>
+
+          <!-- Indicator 4: GNI Per Capita -->
+          <div class="mb-4">
+            <div class="d-flex justify-content-between align-items-center">
+              <label for="gni_per_capita" class="form-label d-flex align-items-center">
+                GNI Per Capita (USD PPP)
+                <i class="bi bi-info-circle-fill text-muted ms-2" data-bs-toggle="tooltip" data-bs-placement="right" title="Gross National Income per capita adjusted for purchasing power parity. Realistic global range: $100 to $150,000."></i>
+              </label>
+            </div>
+            <div class="range-slider-wrapper">
+              <input type="number" step="100" name="gni_per_capita" id="gni_per_capita" class="form-control form-control-custom" style="width: 110px;" value="{{ gni_per_capita | default('15000') }}" min="100" max="150000" required>
+              <input type="range" step="100" id="gni_per_capita_slider" class="form-range slider-custom" min="100" max="150000" value="{{ gni_per_capita | default('15000') }}">
+            </div>
+            <div class="invalid-feedback">GNI Per Capita must be between $100 and $150,000.</div>
+          </div>
+
+          <div class="d-grid mt-4">
+            <button type="submit" class="btn btn-gradient btn-lg py-3">
+              <i class="bi bi-cpu-fill me-2"></i> Predict HDI Score
+            </button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+
+    <!-- Info & History Column -->
+    <div class="col-lg-5">
+      
+      <!-- Prediction logic guidelines card -->
+      <div class="card-custom p-4 mb-4 bg-primary bg-opacity-5">
+        <h4 class="fw-bold mb-3 d-flex align-items-center">
+          <i class="bi bi-info-circle-fill text-primary me-2"></i> Simulator Bounds
+        </h4>
+        <p class="text-secondary mb-3">
+          The machine learning model handles real-world country boundaries correctly. Ensure indicators fall within UNDP margins:
+        </p>
+        <div class="row g-2">
+          <div class="col-6">
+            <div class="border rounded p-2 text-center bg-body">
+              <small class="text-muted d-block">Life Expectancy</small>
+              <strong class="text-primary">20.0 - 100.0 yrs</strong>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="border rounded p-2 text-center bg-body">
+              <small class="text-muted d-block">Exp. Schooling</small>
+              <strong class="text-primary">0.0 - 25.0 yrs</strong>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="border rounded p-2 text-center bg-body">
+              <small class="text-muted d-block">Mean Schooling</small>
+              <strong class="text-primary">0.0 - 20.0 yrs</strong>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="border rounded p-2 text-center bg-body">
+              <small class="text-muted d-block">GNI Per Capita</small>
+              <strong class="text-primary">$100 - $150K</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Session Prediction History -->
+      <div class="card-custom p-4 history-card">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h4 class="fw-bold mb-0">Recent Predictions</h4>
+          {% if session.history %}
+            <a href="{{ url_for('clear_history') }}" class="btn btn-sm btn-outline-danger py-1 px-2 border-0">
+              <i class="bi bi-trash3-fill"></i> Clear
+            </a>
+          {% endif %}
+        </div>
+        
+        {% if session.history %}
+          <div class="table-responsive">
+            <table class="table table-custom table-striped table-hover align-middle mb-0">
+              <thead>
+                <tr>
+                  <th>Indicators (Life / School / GNI)</th>
+                  <th class="text-end">HDI Score</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for item in session.history %}
+                  <tr>
+                    <td>
+                      <small class="d-block text-primary fw-semibold">{{ item.category }}</small>
+                      <small class="text-muted">
+                        LE: {{ item.life_expectancy }} | Sch: {{ item.expected_schooling }}/{{ item.mean_schooling }} | GNI: ${{ "{:,.0f}".format(item.gni_per_capita) }}
+                      </small>
+                    </td>
+                    <td class="text-end fw-bold align-middle fs-6">{{ "{:.3f}".format(item.hdi_score) }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        {% else %}
+          <div class="text-center py-4 border border-dashed rounded-3">
+            <i class="bi bi-clock-history fs-2 text-muted mb-2 d-block"></i>
+            <p class="text-secondary mb-0">No recent simulations in this session</p>
+          </div>
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

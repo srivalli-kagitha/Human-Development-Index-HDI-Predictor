@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Human Development Index (HDI) Predictor{% endblock %}</title>
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Predict the Human Development Index (HDI) Score using advanced machine learning. Analyze development metrics like life expectancy, schooling, and income.">
+  <meta name="keywords" content="HDI, Human Development Index, Machine Learning, Life Expectancy, Education Index, GNI, Predictor">
+  <meta name="author" content="HDI Team">
+
+  <!-- Bootstrap 5 CSS CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  
+  <!-- Bootstrap Icons CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+  
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+  <!-- Floating Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-custom sticky-top py-3">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="{{ url_for('home') }}">
+        <i class="bi bi-globe2 me-2"></i>
+        <span>HDI Predictor</span>
+      </a>
+      <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto align-items-center gap-2 mt-3 mt-lg-0">
+          <li class="nav-item">
+            <a class="nav-link {% if active_page == 'home' %}active{% endif %}" href="{{ url_for('home') }}">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if active_page == 'predict' %}active{% endif %}" href="{{ url_for('predict') }}">Predict Score</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if active_page == 'about' %}active{% endif %}" href="{{ url_for('about') }}">About Project</a>
+          </li>
+          <li class="nav-item ms-lg-2">
+            <button class="theme-toggle-btn" id="themeToggle" type="button" title="Switch Theme">
+              <i class="bi bi-moon-fill" id="themeIcon"></i>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Flash Messages Notifications -->
+  <div class="container mt-4">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show border-0 shadow-sm rounded-3 py-3" role="alert">
+            <div class="d-flex align-items-center">
+              {% if category == 'success' %}
+                <i class="bi bi-check-circle-fill text-success fs-4 me-3"></i>
+              {% elif category == 'danger' %}
+                <i class="bi bi-exclamation-triangle-fill text-danger fs-4 me-3"></i>
+              {% else %}
+                <i class="bi bi-info-circle-fill text-warning fs-4 me-3"></i>
+              {% endif %}
+              <div>
+                <strong>Notification:</strong> {{ message }}
+              </div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+  </div>
+
+  <!-- Loading Animation Overlay -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="spinner-custom mb-3"></div>
+    <h4 class="fw-bold text-white">Running Predictive Model...</h4>
+    <p class="text-white-50">Estimating Human Development Score indices...</p>
+  </div>
+
+  <!-- Main Body Content Block -->
+  <main class="py-4">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Footer Section -->
+  <footer class="text-center text-lg-start mt-auto">
+    <div class="container text-center py-3">
+      <div class="row align-items-center justify-content-between">
+        <div class="col-md-6 text-md-start mb-2 mb-md-0">
+          <p class="mb-0 text-secondary">
+            &copy; 2026 <strong>HDI Predictor</strong>. Designed following PEP 8 and modern web engineering guidelines.
+          </p>
+        </div>
+        <div class="col-md-6 text-md-end text-secondary">
+          <span>Machine Learning | Linear Regression Model | Scikit-learn</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap 5 Bundle JS CDN (including Popper) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+  
+  <!-- Main Script -->
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

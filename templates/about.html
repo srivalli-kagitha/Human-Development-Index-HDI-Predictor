@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}About - HDI Predictor Project{% endblock %}
+
+{% block content %}
+<div class="container fade-in">
+  
+  <div class="text-center mb-5">
+    <h1 class="fw-bold">Project Details & Workflow</h1>
+    <p class="text-secondary mx-auto" style="max-width: 600px;">
+      Explore the backend architecture, technological integration, and scientific indices that power this predictive system.
+    </p>
+  </div>
+
+  <div class="row g-4">
+    <!-- Workflow Details -->
+    <div class="col-lg-8">
+      <div class="card-custom p-4 mb-4">
+        <h3 class="fw-bold mb-4 border-bottom pb-2">Machine Learning Workflow</h3>
+        
+        <div class="position-relative ps-4 border-start border-primary border-2 ms-2">
+          
+          <!-- Step 1 -->
+          <div class="mb-4 position-relative">
+            <div class="position-absolute translate-middle-x bg-primary rounded-circle" style="left: -25px; top: 5px; width: 12px; height: 12px;"></div>
+            <h5 class="fw-bold text-primary">1. Data Synthesis & Compilation</h5>
+            <p class="text-secondary">
+              A high-fidelity dataset was synthesized representing realistic developmental indicators for **168 countries**. The statistics reflect real-world UNDP values, establishing correlations between healthcare access, school enrollment, literacy rates, and GNI.
+            </p>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="mb-4 position-relative">
+            <div class="position-absolute translate-middle-x bg-primary rounded-circle" style="left: -25px; top: 5px; width: 12px; height: 12px;"></div>
+            <h5 class="fw-bold text-primary">2. Exploratory Data Analysis (EDA)</h5>
+            <p class="text-secondary">
+              Using Seaborn and Matplotlib, we generated multi-dimensional visualizations (Histograms, Pair Plots, Scatter Matrices, Box Plots, and Correlation Heatmaps) in `HDI_Analysis.ipynb` to identify skewness, verify relationships, and inspect regression requirements.
+            </p>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="mb-4 position-relative">
+            <div class="position-absolute translate-middle-x bg-primary rounded-circle" style="left: -25px; top: 5px; width: 12px; height: 12px;"></div>
+            <h5 class="fw-bold text-primary">3. Data Preprocessing & Partitioning</h5>
+            <p class="text-secondary">
+              The dataset was cleaned by verifying duplicates and implementing standard mean imputation for handling empty records. The target variable (`HDI Score`) was extracted, and the sample rows split into an **80:20 ratio** for training and testing validation.
+            </p>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="mb-4 position-relative">
+            <div class="position-absolute translate-middle-x bg-primary rounded-circle" style="left: -25px; top: 5px; width: 12px; height: 12px;"></div>
+            <h5 class="fw-bold text-primary">4. Model Training & Serialization</h5>
+            <p class="text-secondary">
+              A **Linear Regression** model was trained using Scikit-Learn. The regression model achieved an accuracy metric ($R^2$) of **98.63%**, which was serialized into `model.pkl` via Python's standard `pickle` library for high-speed retrieval.
+            </p>
+          </div>
+
+          <!-- Step 5 -->
+          <div class="position-relative">
+            <div class="position-absolute translate-middle-x bg-primary rounded-circle" style="left: -25px; top: 5px; width: 12px; height: 12px;"></div>
+            <h5 class="fw-bold text-primary">5. Flask Deployment</h5>
+            <p class="text-secondary">
+              The Flask micro-framework hosts the trained model and processes user inputs. Values entered through range sliders are validated and passed to the model, returning instant scores and developmental reports.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Tech Stack & Dev Details -->
+    <div class="col-lg-4">
+      
+      <!-- Tech Stack Badges Card -->
+      <div class="card-custom p-4 mb-4">
+        <h4 class="fw-bold mb-3 border-bottom pb-2">Technologies Used</h4>
+        <div class="d-flex flex-wrap gap-2">
+          <span class="badge bg-primary bg-gradient px-3 py-2">Python</span>
+          <span class="badge bg-success bg-gradient px-3 py-2">Flask</span>
+          <span class="badge bg-info bg-gradient px-3 py-2">Scikit-learn</span>
+          <span class="badge bg-secondary bg-gradient px-3 py-2">Pandas</span>
+          <span class="badge bg-dark bg-gradient px-3 py-2">NumPy</span>
+          <span class="badge bg-warning text-dark bg-gradient px-3 py-2">Matplotlib</span>
+          <span class="badge bg-danger bg-gradient px-3 py-2">Seaborn</span>
+          <span class="badge bg-primary bg-gradient px-3 py-2">HTML5 & CSS3</span>
+          <span class="badge bg-info text-dark bg-gradient px-3 py-2">Bootstrap 5</span>
+          <span class="badge bg-warning text-dark bg-gradient px-3 py-2">JavaScript</span>
+          <span class="badge bg-secondary bg-gradient px-3 py-2">Pickle</span>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</div>
+{% endblock %}

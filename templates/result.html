@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block title %}Result - HDI Prediction Dashboard{% endblock %}
+
+{% block content %}
+<div class="container fade-in">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      
+      <!-- Prediction Report Card -->
+      <div class="card-custom p-4 p-md-5 mb-4 position-relative" id="printReportArea">
+        
+        <!-- Header for PDF Export -->
+        <div class="d-none d-print-block border-bottom pb-3 mb-4">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h2 class="fw-bold mb-0 text-primary">Human Development Index (HDI) Report</h2>
+              <small class="text-secondary">Simulated Prediction from Machine Learning Model</small>
+            </div>
+            <div class="text-end">
+              <strong>Accuracy:</strong> 98.63%<br>
+              <strong>Date:</strong> 2026-07-06
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center mb-5">
+          <span class="badge {{ badge_class }} px-3 py-2 border mb-3 fw-semibold uppercase fs-7 tracking-wider">
+            Category: {{ category }}
+          </span>
+          <h2 class="fw-bold mb-2">Simulated Development Index</h2>
+          <p class="text-secondary">Based on the inputs provided, the linear regression model calculated the following HDI Score:</p>
+        </div>
+
+        <!-- Conic circular gauge -->
+        <div class="mb-5">
+          <div class="score-circle-wrapper">
+            <div class="score-circle" style="--score-pct: {{ predicted_score * 100 }}">
+              <div class="d-flex flex-column align-items-center">
+                <span class="score-value">{{ "{:.3f}".format(predicted_score) }}</span>
+                <small class="text-secondary fw-semibold">HDI SCORE</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Analysis Descriptions -->
+        <div class="row g-4 mb-4">
+          <div class="col-md-6 border-end border-opacity-10 d-flex flex-column justify-content-between">
+            <div class="p-3 bg-light bg-opacity-50 rounded-3 h-100">
+              <h5 class="fw-bold text-primary mb-2">
+                <i class="bi bi-file-text me-2"></i> Tier Analysis
+              </h5>
+              <p class="text-secondary mb-0 leading-relaxed">
+                {{ description }}
+              </p>
+            </div>
+          </div>
+          <div class="col-md-6 d-flex flex-column justify-content-between">
+            <div class="p-3 bg-light bg-opacity-50 rounded-3 h-100">
+              <h5 class="fw-bold text-success mb-2">
+                <i class="bi bi-lightbulb me-2"></i> Strategic Action
+              </h5>
+              <p class="text-secondary mb-0 leading-relaxed">
+                {{ recommendation }}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Summary of Inputs -->
+        <div class="card bg-light bg-opacity-25 border rounded-4 p-4 mb-4">
+          <h5 class="fw-bold mb-3 border-bottom pb-2">Simulated Development Indicators</h5>
+          <div class="row g-3 text-center text-md-start">
+            <div class="col-sm-6 col-md-3">
+              <span class="text-secondary d-block fs-7">Life Expectancy</span>
+              <strong class="fs-5 text-primary">{{ life_expectancy }} Years</strong>
+            </div>
+            <div class="col-sm-6 col-md-3">
+              <span class="text-secondary d-block fs-7">Expected Schooling</span>
+              <strong class="fs-5 text-primary">{{ expected_schooling }} Years</strong>
+            </div>
+            <div class="col-sm-6 col-md-3">
+              <span class="text-secondary d-block fs-7">Mean Schooling</span>
+              <strong class="fs-5 text-primary">{{ mean_schooling }} Years</strong>
+            </div>
+            <div class="col-sm-6 col-md-3">
+              <span class="text-secondary d-block fs-7">GNI Per Capita</span>
+              <strong class="fs-5 text-primary">${{ "{:,.2f}".format(gni_per_capita) }}</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons (hidden in PDF printing) -->
+        <div class="d-flex flex-wrap gap-3 justify-content-center d-print-none pt-3">
+          <a href="{{ url_for('predict') }}" class="btn btn-outline-custom">
+            <i class="bi bi-arrow-left-circle me-2"></i> Run Another Simulation
+          </a>
+          <button class="btn btn-gradient" id="downloadPdfBtn">
+            <i class="bi bi-file-earmark-pdf-fill me-2"></i> Download Report (PDF)
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
